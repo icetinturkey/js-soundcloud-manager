@@ -33,7 +33,7 @@ First we need to create an object:
 ```html
 <script>
 import("./scmanager.js").then(({default: SCManager, getList, getTrack, getMeta}) => {
-	const scdownloader = new SCManager({Playlist Id},{Client Id},{Proxy Url});
+	const scdownloader = new SCManager({PlaylistId},{ClientId},{ProxyUrl});
 });
 </script>
 ```
@@ -62,9 +62,7 @@ According to this photo, 1551495580 is our Playlist ID.
 <script src="https://cdn.jsdelivr.net/npm/hls.js@1"></script>
 <script>
 import("./scmanager.js").then(({default: SCManager, getList, getTrack, getMeta}) => {
-	//const scdownloader = new SCDownloader("1549273999","LBCcHmRB8XSStWL6wKH2HPACspQlXg2P","https://ycldservice.ycld.workers.dev/?");
-	//const scdownloader = new SCDownloader("170041681","wuM9g7pMB4mU13fW6SuRfQeJNRYNIX9O","https://ycldservice.ycld.workers.dev/?");
-	const scdownloader = new SCManager("32534743","wuM9g7pMB4mU13fW6SuRfQeJNRYNIX9O","https://ycldservice.ycld.workers.dev/?");
+	const scdownloader = new SCManager("32534743","wuM9g7pMB4mU13fW6SuRfQeJNRYNIX9O");
 	getList(scdownloader,"PLAYBACK").then(data => {
 		document.getElementById("title").innerHTML=getMeta(scdownloader).header;
 		document.getElementById("title").href=getMeta(scdownloader).permalink;
