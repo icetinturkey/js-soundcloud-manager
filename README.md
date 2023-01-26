@@ -49,3 +49,41 @@ The data received by our object is described below.
 You can easily get the Playlist IDs from the `Embed link` by pressing the `Share` button. See the photo below.
 
 ![Image](https://download.vadi.info/scmanager1.jpg)
+
+According to this photo, 1551495580 is our Playlist ID.
+
+## Working example
+
+```html
+<img id="art" />
+<a href="#" id="title">Loading</a><br>
+<audio id="player" controls="controls" autoplay="autoplay"></audio>
+<ul id="list"></ul>
+<script src="https://cdn.jsdelivr.net/npm/hls.js@1"></script>
+<script>
+import("./scmanager.js").then(({default: SCManager, getList, getTrack, getMeta}) => {
+	//const scdownloader = new SCDownloader("1549273999","LBCcHmRB8XSStWL6wKH2HPACspQlXg2P","https://ycldservice.ycld.workers.dev/?");
+	//const scdownloader = new SCDownloader("170041681","wuM9g7pMB4mU13fW6SuRfQeJNRYNIX9O","https://ycldservice.ycld.workers.dev/?");
+	const scdownloader = new SCManager("32534743","wuM9g7pMB4mU13fW6SuRfQeJNRYNIX9O","https://ycldservice.ycld.workers.dev/?");
+	getList(scdownloader,"PLAYBACK").then(data => {
+		document.getElementById("title").innerHTML=getMeta(scdownloader).header;
+		document.getElementById("title").href=getMeta(scdownloader).permalink;
+		document.getElementById("art").src=getMeta(scdownloader).artwork;
+		data.forEach((item, index) => {
+			const container = document.createElement("li");
+			const btn = document.createElement("button");
+			btn.innerHTML = index+') '+item.title+"("+Math.floor(item.duration/60000)+":"+Math.floor((item.duration/1000)%60)+") #"+item.playback.toLocaleString();
+			btn.addEventListener("click", function(){
+				getTrack(scdownloader,item.url).then(track => {
+					var hls = new Hls();
+					hls.loadSource(track);
+					hls.attachMedia(player);
+				});
+			});
+			container.appendChild(btn);
+			document.getElementById("list").appendChild(container);
+		});
+	});
+});
+</script>
+```
