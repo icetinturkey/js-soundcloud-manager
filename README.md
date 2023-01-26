@@ -89,4 +89,4 @@ import("./scmanager.js").then(({default: SCManager, getList, getTrack, getMeta})
 Result:
 
 
-![Image](https://download.vadi.info/scmanager2.jpg)
+![Image](https://download.vadi.info/scmanager3.jpg)
