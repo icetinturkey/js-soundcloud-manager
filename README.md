@@ -85,3 +85,7 @@ import("./scmanager.js").then(({default: SCManager, getList, getTrack, getMeta})
 });
 </script>
 ```
+
+Result:
+
+![Image](https://download.vadi.info/scmanager2.jpg)
