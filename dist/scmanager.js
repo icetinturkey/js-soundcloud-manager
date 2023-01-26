@@ -14,6 +14,8 @@ export async function getList(obj,songsort="ID") {
 	let queue = [];
 	let urls = [];
 	let sonuc = await download(obj,url1);
+	const _count = Object.keys(sonuc).length;
+	if(_count>0){
 	sonuc.forEach(function(i, idx, array){
 		if (typeof i.permalink !== 'undefined') {
 			if (i.policy == 'ALLOW') {
@@ -64,6 +66,7 @@ export async function getList(obj,songsort="ID") {
             tracks.sort((a,b) => (a.id < b.id) ? 1 : ((b.id < a.id) ? -1 : 0));
         break;
     }
+	}
 	return tracks;
 }
 async function download(obj,dlink){
