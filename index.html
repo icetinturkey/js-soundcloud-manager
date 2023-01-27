@@ -1,0 +1,305 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>JS-Soundcloud-Manager</title>
+	<meta name="description" content="Sample project of the Soundcloud Manager library. You can listen to your Soundcloud playlist here.">
+	<meta name="keywords" content="soundcloud,sample,manager,downloader,playlist,javascript,library,addon">
+	<meta name="robots" content="index,follow">
+	<meta name="subject" content="Soundcloud Manager">
+	<link rel="icon" type="image/png" href="https://download.vadi.info/scmanagerfavicon.png">
+	<style>
+	@import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500&display=swap");
+	*{
+		box-sizing: border-box;
+	}
+	body{
+		font-family: "Quicksand",-apple-system,BlinkMacSystemFont,'Segoe UI','Roboto','Oxygen','Ubuntu','Cantarell','Fira Sans','Droid Sans','Helvetica Neue',sans-serif;
+		background: rgb(238,174,202);
+		background: linear-gradient(90deg, rgba(238,174,202,1) 0%, rgba(148,187,233,1) 100%);
+		margin: 0;
+		padding: 0;
+		font-weight: 400;
+	}
+	button{
+		cursor:pointer;
+	}
+	.w-100{
+		width:100%;
+	}
+	.container{
+		width: 100%;
+		display: flex;
+		justify-content: center;
+	}
+	.loader {
+		background: rgba(0, 0, 0, 0.2);
+		transition: 0.3s ease;
+		backdrop-filter: blur(30px);
+		border-radius: 15px;
+		width:100%;
+		max-width: 760px;
+		margin-left:10px;
+		margin-right:10px;
+		margin-top:20px;
+		height: 320px;
+		display:flex;
+		flex-direction:row;
+	}
+	.inner {
+		background: rgba(0, 0, 0, 0.2);
+		transition: 0.3s ease;
+		backdrop-filter: blur(30px);
+		border-radius: 15px;
+		width:100%;
+		max-width: 760px;
+		margin-left:10px;
+		margin-right:10px;
+		margin-top:20px;
+		height: 320px;
+		display:flex;
+		flex-direction:row;
+		display:none;
+	}
+	.one{
+		display:flex;
+		flex-direction:column;
+		justify-content:center;
+		padding-bottom:30px;
+	}
+	h1{
+		text-align:center;
+	}
+	.pl_controls{
+		display:flex;
+		flex-direction:row;
+	}
+	.art{
+		display:flex;
+		justify-content:center;
+	}
+	.buttons{
+		display:flex;
+		flex-direction:column;
+		justify-content:center;
+	}
+	.buttons_inner{
+		display:flex;
+		justify-content:space-evenly;
+	}
+	.pause{
+		display: none;
+	}
+	.vol{
+		display:flex;
+		flex-direction:column;
+		justify-content:center;
+		padding-left:10px;
+		padding-right:10px;
+	}
+	.vol_inner{
+		
+	}
+	.vol_inner input{
+		width:100%;
+	}
+	.two{
+		padding:4px;
+		padding-right:10px;
+	}
+	.list{
+		height:100%;
+		overflow:hidden;
+		overflow-y:scroll;
+	}
+	.btn{
+		width:100%;
+		border:none;
+		background-color:transparent;
+		text-align:left;
+		font-family:"Quicksand",-apple-system,BlinkMacSystemFont,'Segoe UI','Roboto','Oxygen','Ubuntu','Cantarell','Fira Sans','Droid Sans','Helvetica Neue',sans-serif;
+		border-bottom:1px solid gray;
+	}
+	.cbtn{
+		border:none;
+		background-color:rgba(255,255,255,0.5);
+		border-radius:5px;
+	}
+	.btn:hover{
+		background-color:rgba(255,255,255,0.5);
+	}
+	.cbtn:hover{
+		background-color:rgba(255,255,255,0.8);
+	}
+	.lbtn{
+		margin-left:10px;
+		padding:6px 10px;
+		border:none;
+		background-color:rgba(255,255,255,0.5);
+		border-radius:5px;
+		font-size:13px;
+		font-family: monospace,"Quicksand", sans-serif;
+	}
+	.lbtn:hover{
+		background-color:rgba(255,255,255,0.8);
+	}
+	.linp{
+		padding:6px 10px;
+		width:300px;
+		font-size: 10px;
+		font-weight:500;
+		border-radius: 10px;
+		background: #000;
+		color: #fff;
+		font-family: "Quicksand", sans-serif;
+		border: 0;
+		outline: 0;
+		transition: 0.3s ease;
+		background: rgba(0, 0, 0, 0.05);
+		backdrop-filter: blur(20px);
+		-webkit-backdrop-filter: blur(20px);
+		border-radius: 5px;
+		border: 1px solid rgba(255, 255, 255, 0.18);
+		color: white;
+	}
+	@media only screen and (max-width: 767px) {
+		.inner {
+			flex-direction:column;
+			height:500px;
+			margin-bottom:25px;
+		}
+		.one{
+			height:40%;
+		}
+		.two{
+			height:60%;
+		}
+	}
+	</style>
+  </head>
+<body>
+	<audio id="muzikCalar1" src="" autoplay></audio>
+	<div class="container">
+	<div class="loader" id="loader">
+		<div style="width:100%;">
+			<p style="text-align:center;">Load Playlist</p>
+			<div class="loader_inner" style="display:flex;justify-content:center;">
+				<div><input type="text" class="linp" id="playlist" value="https://api.soundcloud.com/playlists/32534743" /></div>
+				<div><button type="button" class="lbtn" onclick="load()" id="lbtn">Load</button></div>
+			</div>
+		</div>
+	</div>
+	<div class="inner" id="inner">
+		<div class="one w-100">
+			<div>
+				<h1>Soundcloud Player</h1>
+				<div class="pl_controls">
+					<div class="w-100 art"><img width="100" height="100" alt="Album-Image" id="art" src="https://download.vadi.info/noimage.png" /></div>
+					<div class="w-100 buttons">
+					<div class="buttons_inner">
+						<div class="play" id="play"><button type="button" class="cbtn" onclick="pplay()"><svg style="width:40px;height:40px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 582 482"><path d="M176 480C148.615 480 128 457.608 128 432V80C128 54.62 148.396 32.017 176.012 32.017C184.698 32.017 193.366 34.368 201.031 39.047L489.031 215.047C503.297 223.766 512 239.281 512 256S503.297 288.234 489.031 296.953L201.031 472.953C193.359 477.641 184.688 480 176 480Z"/></svg></button></div>
+						<div class="pause" id="pause"><button type="button" class="cbtn" onclick="ppause()"><svg style="width:40px;height:40px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 482"><path d="M272 64H240C213.49 64 192 85.49 192 112V400C192 426.51 213.49 448 240 448H272C298.51 448 320 426.51 320 400V112C320 85.49 298.51 64 272 64ZM80 64H48C21.49 64 0 85.49 0 112V400C0 426.51 21.49 448 48 448H80C106.51 448 128 426.51 128 400V112C128 85.49 106.51 64 80 64Z"/></svg></button></div>
+						<div class="stop"><button type="button" class="cbtn" onclick="pstop()"><svg style="width:40px;height:40px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 374 482"><path d="M384 128V384C384 419.346 355.346 448 320 448H64C28.654 448 0 419.346 0 384V128C0 92.654 28.654 64 64 64H320C355.346 64 384 92.654 384 128Z"/></svg></button></div>
+					</div>
+					</div>
+					<div class="w-100 vol">
+						<div>Volume:</div>
+						<div class="vol_inner"><input id="slider" type="range" min="1" max="100" value="99" onchange="changeVol(this.value)" /></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="two w-100">
+			<div class="list" id="list">
+			</div>
+		</div>
+	</div>
+	</div>
+<script src="https://cdn.jsdelivr.net/npm/hls.js@1"></script>
+<script>
+var hls = new Hls();
+const player = document.getElementById('muzikCalar1');
+function load(){
+	const _url = document.getElementById('playlist').value;
+	document.getElementById('lbtn').style.display = "none";
+	import("https://cdn.jsdelivr.net/gh/icetinturkey/js-soundcloud-manager/dist/scmanager.min.js").then(({default: SCManager, getList, getTrack, getMeta}) => {
+	const scdownloader = new SCManager(_url.substring(_url.lastIndexOf('/')+1),"wuM9g7pMB4mU13fW6SuRfQeJNRYNIX9O","https://api.vadi.info/proxy?");
+	getList(scdownloader).then(data => {
+		if(data.length>0){
+			let _artwork = "https://download.vadi.info/noimage.png";
+			if(_artwork !== null){_artwork=getMeta(scdownloader).artwork;}
+			document.getElementById("art").src = _artwork;
+			const container = document.getElementById('list');
+			document.getElementById('loader').style.display = "none";
+			document.getElementById('inner').style.display = "flex";
+			container.innerHTML = "";
+			data.forEach((item, index) => {
+				const btn = document.createElement("button");
+				btn.className = "btn";
+				btn.innerHTML = "<b>"+index+')</b> '+item.title+"("+Math.floor(item.duration/60000)+":"+Math.floor((item.duration/1000)%60)+") #"+item.playback.toLocaleString();
+				btn.addEventListener("click", function(){
+					getTrack(scdownloader,item.url).then(track => {
+						hls = new Hls();
+						hls.loadSource(track);
+						hls.attachMedia(muzikCalar1);
+						if ('mediaSession' in navigator) {
+							navigator.mediaSession.metadata = new MediaMetadata({
+								title: '𝗦𝗖 𝗠𝗔𝗡𝗔𝗚𝗘𝗥',
+								artist: getMeta(scdownloader).header,
+								artwork: [{src: _artwork, sizes: '100x100', type: 'image/jpg'}]
+							});
+							navigator.mediaSession.setActionHandler('nexttrack', function() {
+								var nextButton = btn.nextElementSibling;
+								if(nextButton!=null){nextButton.click();}
+							});
+							navigator.mediaSession.setActionHandler('previoustrack', function() {
+								var prevButton = btn.previousElementSibling;
+								if(prevButton!=null){prevButton.click();}
+							});
+						}
+					});
+				});
+				container.appendChild(btn);
+			});
+		}else{
+			document.getElementById('lbtn').style.display = "block";
+			alert("Unable to access the list !");
+		}
+	});
+	});
+}
+player.onplay = function() {
+    document.getElementById('play').style.display = "none";
+	document.getElementById('pause').style.display = "block";
+};
+player.onpause = function() {
+    document.getElementById('play').style.display = "block";
+	document.getElementById('pause').style.display = "none";
+};
+function pplay(){
+	player.play();
+}
+function ppause(){
+	player.pause();
+}
+function pstop(){
+	document.getElementById('play').style.display = "block";
+	document.getElementById('pause').style.display = "none";
+	player.src = "";
+	player.load();
+	try{
+		hls.stopLoad();
+		hls.detachMedia();
+		hls.destroy();
+	}catch{}
+}
+function changeVol(e){
+	const _vol = parseFloat(e/100);
+	try{
+		player.volume=_vol;
+	}catch{}
+}
+</script>
+</body>
+</html>
