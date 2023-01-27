@@ -88,5 +88,8 @@ import("./scmanager.js").then(({default: SCManager, getList, getTrack, getMeta})
 
 Result:
 
-
 ![Image](https://download.vadi.info/scmanager3.jpg)
+
+Live Preview:
+
+[https://icetinturkey.github.io/js-soundcloud-manager](https://icetinturkey.github.io/js-soundcloud-manager)
